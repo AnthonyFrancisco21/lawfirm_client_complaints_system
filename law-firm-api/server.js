@@ -5,15 +5,15 @@ import express from 'express';
 
 // Load .env variables first
 import db from './config/database.js'; 
-import testRouter from './routes/testRoutes.js';
+import routes from './routes/routes.js';
 
 
 const PORT = 3000;
 const app = express();
 app.use(express.json());
 
-// http://localhost:3000/api/getAllData
-app.use("/api", testRouter);
+// http://localhost:3000/api/getClient
+app.use("/api", routes);
 
 
 

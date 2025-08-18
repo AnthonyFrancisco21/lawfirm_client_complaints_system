@@ -1,4 +1,4 @@
-import * as Test from "../models/text.js";
+/* import * as Test from "../models/text.js";
 
 
 //This is where we grab the extension for router
@@ -29,3 +29,4 @@ export const getById = async (req, res) => {
 
 };
 
+ */
