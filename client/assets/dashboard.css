@@ -1,0 +1,120 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    background-color: #343a40 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: white !important;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    margin: 0 10px;
+    border-radius: 5px;
+    padding: 8px 15px !important;
+    transition: all 0.3s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white !important;
+}
+
+.nav-link.active {
+    background-color: #007bff;
+    color: white !important;
+}
+
+.main-content {
+    padding: 30px 15px;
+    min-height: calc(100vh - 76px);
+}
+
+/* Page Sections */
+.page-section {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.page-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.form-step { display: none; }
+.form-step.step-active { display: block; }
+
+.input-wrap{
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+}
+.fw1, .fw2{
+    flex-grow: 1;
+}
+.fw3{
+    flex-grow: 0.5;
+}
+
+.sw1{
+    flex-grow: 0.5;
+}
+.sw2{
+    flex-grow: 1;
+}
+
+/* Change background of the calendar */
+.fc .fc-daygrid-day {
+  background-color: #f9fafb; /* light gray */
+}
+
+/* Highlight weekends */
+.fc-day-sat, .fc-day-sun {
+  background-color: #ffecec;
+}
+
+/* Style event boxes */
+.fc-event {
+  background-color: #2563eb; /* blue */
+  border: none;
+  color: white;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 0.9rem;
+}
+
+.fc-event:hover {
+  color: black;       /* text changes */
+  text-decoration: none;
+}
+
+/* Change header toolbar */
+.fc-toolbar-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.fc-daygrid-day-number {
+  color: #272727; /* red numbers */
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Day headers (Sun, Mon, Tue...) */
+.fc-col-header-cell-cushion {
+  color: #0055ff; /* blue headers */
+  font-weight: 600;
+  font-size: 16px;
+}
