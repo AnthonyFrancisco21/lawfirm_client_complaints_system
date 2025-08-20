@@ -39,13 +39,18 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#client-request" data-page="client-request">
-                            <i class="bi bi-card-checklist"></i> Client Request
+                        <a class="nav-link" href="#client-requestAndAssigning" datas-page="client-requestAndAssigning">
+                            <i class="bi bi-card-checklist"></i> Request & Assigning
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#team" data-page="team">
                             <i class="bi bi-cup-hot-fill"></i> Team
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#statistics" data-page="statistics">
+                            <i class="bi bi-clipboard-data-fill"></i> Statistics
                         </a>
                     </li>
 
@@ -135,13 +140,12 @@
                 <div class="form-step">
                     <div class="mb-3">
                         <label for="request_type" class="form-label">Request Type</label>
-                        <select class="form-select" id="my-dropdown" name="myOption">
-                            <option value="">--Please choose an option--</option>
-                            <option value="">Legal Consultation & Advice</option>
-                            <option value="">Document Services</option>
-                            <option value="">Litigation & Court Representation</option>
-                            <option value="">Dispute Resolution</option>
-                            <option value="">Specialized Legal Services</option>
+                        <select class="form-select" id="request_type" name="request_type">
+                            <option value="Legal Consultation & Advice">Legal Consultation & Advice</option>
+                            <option value="Document Services">Document Services</option>
+                            <option value="Litigation & Court Representation">Litigation & Court Representation</option>
+                            <option value="Dispute Resolution">Dispute Resolution</option>
+                            <option value="Specialized Legal Services">Specialized Legal Services</option>
                         </select>
                         
                     </div>
@@ -158,16 +162,18 @@
 
                     <div class="mb-3">
                         <label for="fileUpload" class="form-label">Upload Attachment</label>
-                        <input class="form-control" type="file" id="fileUpload" accept="file/*">
+                        <input class="form-control" type="file" id="fileUpload" name="attachment" accept="file/*">
                     </div>
 
                     <div class="mb-3">
                         <label for="preferred_lawyer" class="form-label">Preferred Lawyer</label>
-                        <input type="text" class="form-control" id="preferred_lawyer" name="preferred_lawyer">
+                        <select class="form-select" id="preferred_lawyer" name="preferred_lawyer">
+                            <option value="2">Atty. Dela Cruz</option>
+                        </select>
                     </div>
 
                     <button type="button" class="btn btn-secondary" id="prevBtn">Previous</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-success" id="submit-btn">Submit</button>
                 </div>
             </form>
 
@@ -203,32 +209,58 @@
             </div>
         </div><!-- Client status for staff end-->
 
-        <div id="client-request" class="page-section"> <!--Client Request Admin-->
-            <h1>Client Request</h1>
+        <div id="client-requestAndAssigning" class="page-section"> <!--Client Request Admin-->
 
-            <input id="search_request" type="text" class="form-control" placeholder="Search Client's Request" aria-label="request search" aria-describedby="basic-addon2"> 
-            <div class="mt-4">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead class="table-primary">
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Request Type</th>
-                            <th>Date Added</th>
-                            <th>Attachment</th>
-                            <th>Case Description</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
+            <div class="request-wrapper">
+
+                <h1>Client Request</h1>
+            
+                <input id="search_request" type="text" class="form-control" placeholder="Search Client's Request" aria-label="request search" aria-describedby="basic-addon2"> 
+                <div class="mt-4">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Request Type</th>
+                                <th>Date Added</th>
+                                <th>Attachment</th>
+                                <th>Case Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+            <div class="assigning-wrapper">
+                <h1>Assigning Lists</h1>
+            
+                <input id="search_assigned" type="text" class="form-control" placeholder="Search Client's Assigned" aria-label="request search" aria-describedby="basic-addon2"> 
+                <div class="mt-4">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Client's Name</th> 
+                                <th>Assigned Lawyer</th>
+                                <th>Assignment Status</th>
+                                <th>Assigned Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
 
         </div><!--Client Request Admin end-->
 
-        <div id="team" class="page-section">
+        <div id="team" class="page-section"> <!--TEAM section-->
             <h1>Team</h1>
 
             <div class="team-settings">
@@ -254,11 +286,93 @@
                         
                     </tbody>
                 </table>
+            </div> 
+
+        </div><!--TEAM section end-->
+
+        <div id="statistics" class="page-section"> <!--Statistics Admin-->
+
+            <div class="header-content-wrapper">
+                <div class="header-cards">
+                    <h3>
+                        <i class="bi bi-person"></i>
+                        <span id="total-client">456</span>
+                    </h3>
+                    <p>Total Client</p>
+                </div>
+                <div class="header-cards">
+                    <h3>
+                        <i class="bi bi-hourglass-bottom"></i>
+                        <span id="pending-case">12</span>
+                    </h3>
+                    <p>Pending Case</p>
+                </div>
+                <div class="header-cards">
+                    <h3>
+                        
+                        <i class="bi bi-folder2-open"></i>
+                        <span id="open-case">12</span>
+                    </h3>
+                    <p>Open Case</p>
+                </div>
+                <div class="header-cards">
+                    <h3>
+                        <i class="bi bi-search"></i>
+                        <span id="active-case">5</span>
+                    </h3>
+                    <p>Active Case</p>
+                </div>
+                <div class="header-cards">
+                    <h3>
+                        <i class="bi bi-person-lock"></i>
+                        <span id="close-case">65</span>
+                    </h3>
+                    <p>Closed Case</p>
+                </div>
+            </div> 
+
+
+            <div class="piechart-graph-container">
+
+                <div class="piechart-wrapper">
+                    <canvas id="pie-chart" width="100" height="50"></canvas>
+                </div>
+
+                <div class="barchart-wrapper">
+                    <canvas id="req-chart" width="100" height="50"></canvas>
+                </div>
+
+            </div>
+            
+            <div class="clientgrowth-wrapper">
+                <canvas id="clientGrowthChart"></canvas>
             </div>
 
-            
+            <div class="case-status">
+                <label>Case status</label>
 
-        </div>
+                <input id="search_assign" type="text" class="form-control" placeholder="Search Assign to lawyer" aria-label="request search" aria-describedby="basic-addon2"> 
+                <div class="mt-4">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Client's Name</th>
+                                <th>Request type</th>
+                                <th>Description</th>
+                                <th>Case Status</th>
+                                <th>Case Description</th>
+                                <th>Assigned Lawyer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div><!--Statistics Admin-->
 
 
 
@@ -268,6 +382,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="scripts/dashboard.js"></script>
+    <script src="scripts/clientEntry.js"></script>
+
 </body>
 </html>

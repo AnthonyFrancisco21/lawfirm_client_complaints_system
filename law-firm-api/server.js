@@ -2,6 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config()
 import express from 'express';
+import cors from "cors";
 
 // Load .env variables first
 import db from './config/database.js'; 
@@ -11,6 +12,7 @@ import routes from './routes/routes.js';
 const PORT = 3000;
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // http://localhost:3000/api/getClient
 ///http://localhost:3000/api/newClientandCase

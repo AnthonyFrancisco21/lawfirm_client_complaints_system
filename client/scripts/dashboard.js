@@ -33,30 +33,7 @@ window.addEventListener('load', handleHashChange);
 // Run when hash changes
 window.addEventListener('hashchange', handleHashChange);
 
-// Form wizard functionality
-    const formSteps = document.querySelectorAll(".form-step");
-    const nextBtn = document.getElementById("nextBtn");
-    const prevBtn = document.getElementById("prevBtn");
-    let currentStep = 0;
 
-    nextBtn.addEventListener("click", () => {
-        formSteps[currentStep].classList.remove("step-active");
-        currentStep++;
-        formSteps[currentStep].classList.add("step-active");
-    });
-
-    prevBtn.addEventListener("click", () => {
-        formSteps[currentStep].classList.remove("step-active");
-        currentStep--;
-        formSteps[currentStep].classList.add("step-active");
-    });
-
-    // Optional: handle form submission
-    document.getElementById("clientForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        alert("Form submitted! You can replace this with API call.");
-        
-    });
 
 
 let calendar; // declare globally
@@ -90,3 +67,97 @@ if (scheduleBtn) {
     }, 50);
   });
 }
+
+
+
+//Statistics scripts
+const ctx = document.getElementById('pie-chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',   // 🔑 set type to "pie" (or "doughnut")
+      data: {
+        labels: ['Male', 'Female'],  // categories
+        datasets: [{
+          label: 'Clients by Gender',
+          data: [10, 11], // sample values
+          backgroundColor: [
+            
+            '#3498db', // blue
+            
+            '#f06050ff'  // red
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'right'  // moves legend to the right
+          },
+          title: {
+            display: true,
+            text: 'Clients by Gender'
+          }
+        }
+      }
+    });
+
+
+    
+const request_chart = document.getElementById('req-chart').getContext('2d');
+
+new Chart(request_chart, {
+  type: 'bar',
+  data: {
+    labels: ['Legal Consultation', 'Document Services', 'Litigation & Court Representation', 'Dispute Resolution', 'Specialized Legal Services'],
+    datasets: [{
+      label: 'Most Requested Services',
+      data: [3, 7, 4, 6, 5],
+      backgroundColor: '#3498db'
+    }]
+  },
+  options: {
+    indexAxis: 'y', // makes it horizontal bar
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Request type' }
+    }
+  }
+});
+
+
+
+const clientGrowth = document.getElementById('clientGrowthChart').getContext('2d');
+
+  new Chart(clientGrowth , {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], // months
+      datasets: [{
+        label: 'New Clients',
+        data: [3, 7, 4, 6, 9, 5, 8, 3,8, 2, 11, 12], // sample client counts
+        borderColor: '#3498db',   // blue line
+        backgroundColor: '#3498db',
+        tension: 0.3,             // smooth curve
+        fill: false               // don’t fill under line
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Client Growth (Monthly)'
+        }
+      },
+      scales: {
+        x: { display: true },
+        y: {
+          display: true,
+          beginAtZero: true      // start y-axis at 0
+          // type: 'logarithmic'  // you can enable this if you *really* want log scale
+        }
+      }
+    }
+  });

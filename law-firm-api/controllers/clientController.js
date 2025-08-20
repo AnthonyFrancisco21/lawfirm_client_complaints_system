@@ -12,28 +12,27 @@ export const getclient = async (req, res) => {
 
 export const newClientAndCase = async (req, res) => {
   try {
-
+    const toNull = (val) => (val === "" || val === undefined ? null : val);
     //const clientData = JSON.parse(req.body.client); // since FormData sends as string
-    //const caseData = JSON.parse(req.body.case);
-    //Might need later when working with front end
+    
 
     // Access text fields directly
     const clientData = {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
+      firstname: req.body.first_name,
+      lastname: req.body.last_name,
       age: req.body.age,
       gender: req.body.gender,
       email_address: req.body.email_address,
       address: req.body.address,
       contact_number: req.body.contact_number,
-      adminId: req.body.admin_id, 
+      adminId: req.body.admin_id
     };
 
     const caseData = {
-      requestType: req.body.requestType,
-      compDescription: req.body.compDescription,
-      preferredDate: req.body.preferred_date,
-      preferredLawyer: req.body.preferred_lawyer,
+      requestType: req.body.request_type,
+      compDescription: req.body.complaint_description,
+      preferredDate: toNull(req.body.preferred_date),
+      preferredLawyer: toNull(req.body.preferred_lawyer)
     };
 
     // 1. Insert client
@@ -49,13 +48,15 @@ export const newClientAndCase = async (req, res) => {
     }
 
     res.status(201).json({
-      message: "Client, Case, and Attachment created successfully!",
+      success:true,
+      message: "Client added successfully!",
       clientId,
       caseId,
     });
   } catch (err) {
     console.error("❌ Error inserting client/case:", err);
     res.status(500).json({
+      success: false,
       message: "Error creating client and case",
       error: err.message,
     });
