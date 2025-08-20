@@ -13,10 +13,9 @@ const app = express();
 app.use(express.json());
 
 // http://localhost:3000/api/getClient
+///http://localhost:3000/api/newClientandCase
 app.use("/api", routes);
-
-
-
+app.use("/uploads", express.static("uploads"));
 
 
 app.listen(PORT, () => {

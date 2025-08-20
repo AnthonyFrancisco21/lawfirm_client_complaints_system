@@ -118,3 +118,13 @@ body {
   font-weight: 600;
   font-size: 16px;
 }
+
+/*------------ Tean css----------*/
+.team-settings{
+    display: flex;
+    justify-content: space-between;
+}
+
+.team-settings .search-wrapper{
+    width: 40%;
+}

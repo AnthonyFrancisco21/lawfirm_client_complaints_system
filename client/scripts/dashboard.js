@@ -55,7 +55,7 @@ window.addEventListener('hashchange', handleHashChange);
     document.getElementById("clientForm").addEventListener("submit", (e) => {
         e.preventDefault();
         alert("Form submitted! You can replace this with API call.");
-        // Here you can send the form data using fetch() to your backend
+        
     });
 
 

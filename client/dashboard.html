@@ -38,6 +38,16 @@
                             <i class="bi bi-list-check"></i> Client Status
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#client-request" data-page="client-request">
+                            <i class="bi bi-card-checklist"></i> Client Request
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#team" data-page="team">
+                            <i class="bi bi-cup-hot-fill"></i> Team
+                        </a>
+                    </li>
 
                     
                     <!-- Profile Dropdown with Button -->
@@ -66,7 +76,7 @@
         <div id="new-client" class="page-section active">
             <h1>New Client</h1>
             <p>Enter new client information here.</p>
-            <form id="clientForm">
+            <form id="clientForm" enctype="multipart/form-data">
                 <!-- Step 1 -->
                 <div class="form-step step-active">
 
@@ -147,6 +157,11 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="fileUpload" class="form-label">Upload Attachment</label>
+                        <input class="form-control" type="file" id="fileUpload" accept="file/*">
+                    </div>
+
+                    <div class="mb-3">
                         <label for="preferred_lawyer" class="form-label">Preferred Lawyer</label>
                         <input type="text" class="form-control" id="preferred_lawyer" name="preferred_lawyer">
                     </div>
@@ -165,9 +180,11 @@
             <div id="calendar"></div>
         </div>
 
-        <div id="client-status" class="page-section">
+        
+        <div id="client-status" class="page-section"><!-- Client status for staff-->
             <h1>Client Status</h1>
             <p>Check the status of existing clients here.</p>
+            <input id="search_client" type="text" class="form-control" placeholder="Search Client" aria-label="client search" aria-describedby="basic-addon2">
             <div class="mt-4">
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="table-primary">
@@ -180,29 +197,74 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>John</td>
-                            <td>Doe</td>
-                            <td>2025-08-01</td>
-                            <td><span class="badge bg-success">Active</span></td>
-                        </tr>
-                        <tr>
-                            <td>Jane</td>
-                            <td>Smith</td>
-                            <td>2025-07-28</td>
-                            <td><span class="badge bg-danger">Inactive</span></td>
-                        </tr>
-                        <tr>
-                            <td>Mark</td>
-                            <td>Lee</td>
-                            <td>2025-07-20</td>
-                            <td><span class="badge bg-warning text-dark">Pending</span></td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
+        </div><!-- Client status for staff end-->
+
+        <div id="client-request" class="page-section"> <!--Client Request Admin-->
+            <h1>Client Request</h1>
+
+            <input id="search_request" type="text" class="form-control" placeholder="Search Client's Request" aria-label="request search" aria-describedby="basic-addon2"> 
+            <div class="mt-4">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Request Type</th>
+                            <th>Date Added</th>
+                            <th>Attachment</th>
+                            <th>Case Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+        </div><!--Client Request Admin end-->
+
+        <div id="team" class="page-section">
+            <h1>Team</h1>
+
+            <div class="team-settings">
+                <div class="search-wrapper">
+                    <input id="search_team" type="text" class="form-control" placeholder="Search Team" aria-label="team's search" aria-describedby="basic-addon2">  
+                </div>
+                <button id="add_team" type="button" class="btn btn-primary add-team-btn">Add Team</button>
+            </div>
+            <div class="mt-4">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Date Created</th>
+                            <th>Specialization</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            
+
         </div>
-    </div>
+
+
+
+
+
+    </div><!--Main end-->
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
