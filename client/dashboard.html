@@ -195,18 +195,33 @@
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="table-primary">
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                            <th>Client's Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                            <th>Case Status</th>
                             <th>Date Added</th>
-                            <th>Status</th>
-                            
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="show-client">
                         
                     </tbody>
                 </table>
             </div>
+
+            <nav aria-label="Page navigation example">
+                <ul id="client-page" class="pagination justify-content-end">
+                    <li class="page-item" id="prev-page">
+                        <a class="page-link" data-page="prev">Previous</a>
+                    </li>
+                    
+                    <li class="page-item" id="next-page">
+                        <a class="page-link" data-page="next">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
         </div><!-- Client status for staff end-->
 
         <div id="client-requestAndAssigning" class="page-section"> <!--Client Request Admin-->
@@ -386,6 +401,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="scripts/dashboard.js"></script>
     <script src="scripts/clientEntry.js"></script>
+    <script src="scripts/getClient.js"></script>
 
 </body>
 </html>

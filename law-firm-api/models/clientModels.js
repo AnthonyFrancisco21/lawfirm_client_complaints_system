@@ -1,8 +1,32 @@
 import db from "../config/database.js";
 
-export const getAllClient = async () => {
-    return db.query("SELECT * from client_tbl")
+export const getAllClient = async (limit, offset) => {
+  const [clientRows] = await db.query(`
+    SELECT 
+      c.first_name, 
+      c.last_name, 
+      c.age, 
+      c.gender, 
+      c.email_address, 
+      c.address, 
+      c.contact_number, 
+      DATE(c.date_added) AS date_added,
+      cs.case_status
+    FROM client_tbl c
+    LEFT JOIN case_tbl cs
+      ON c.client_id = cs.client_id
+    ORDER BY c.client_id
+    LIMIT ? OFFSET ?
+  `, [limit, offset]);
+
+  return clientRows;
+};
+
+export const getClientCount = async () => {
+  const [clientCountRows] = await db.query("SELECT COUNT(*) AS total FROM client_tbl")
+  return clientCountRows[0].total;
 }
+
 
 export const newClient = async (clientData) => {
   const [result] = await db.query(

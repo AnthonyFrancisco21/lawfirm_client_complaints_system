@@ -181,13 +181,19 @@ body {
 .form-step { display: none; }
 .form-step.step-active { display: block; }
 
-/* red border */
+
 .error { border: 2px solid #dc3545 !important; }
 
-/* small red text under the field */
+
 .error-message {
   color: #dc3545;
   font-size: 0.875rem;
   margin-top: 0.25rem;
   display: block;
+}
+
+/*Show client for staff style */
+
+.page-item{
+    cursor: pointer;
 }

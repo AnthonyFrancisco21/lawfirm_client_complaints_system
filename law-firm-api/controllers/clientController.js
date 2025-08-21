@@ -1,19 +1,49 @@
-import { getAllClient, newClient, newCase } from "../models/clientModels.js";
+import { getAllClient, getClientCount, newClient, newCase } from "../models/clientModels.js";
 import { insertAttachment } from "../models/caseFileModels.js";
 
+
 export const getclient = async (req, res) => {
+
   try {
-    const [rows] = await getAllClient();
-    res.json(rows);
+
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = 10;
+    const offset = (page - 1) * pageSize;
+
+    const dataRes = await getAllClient(pageSize, offset);
+
+    const data = dataRes.map(row => ({
+      ...row,
+      date_added: row.date_added 
+        ? row.date_added.toISOString().split("T")[0]
+        : null
+    }));
+
+    const total = await getClientCount();
+    const totalPages = Math.ceil(total / pageSize)
+
+    res.json({
+      page,
+      pageSize,
+      total,
+      totalPages,
+      data
+    });
+
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ error: err.message });
   }
 };
+
+
+
+
+
 
 export const newClientAndCase = async (req, res) => {
   try {
     const toNull = (val) => (val === "" || val === undefined ? null : val);
-    //const clientData = JSON.parse(req.body.client); // since FormData sends as string
+    
     
 
     // Access text fields directly
