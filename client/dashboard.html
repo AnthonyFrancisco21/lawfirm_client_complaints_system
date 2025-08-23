@@ -39,8 +39,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#client-requestAndAssigning" datas-page="client-requestAndAssigning">
-                            <i class="bi bi-card-checklist"></i> Request & Assigning
+                        <a class="nav-link" href="#client-requestAndAssigning" data-page="client-requestAndAssigning">
+                            <i class="bi bi-card-checklist"></i> Waiting & Assigned List
                         </a>
                     </li>
                     <li class="nav-item">
@@ -49,10 +49,16 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#case_list" data-page="case_list">
+                            <i class="bi bi-card-checklist"></i> Case List
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#statistics" data-page="statistics">
                             <i class="bi bi-clipboard-data-fill"></i> Statistics
                         </a>
                     </li>
+
 
                     
                     <!-- Profile Dropdown with Button -->
@@ -198,8 +204,8 @@
                             <th>Client's Name</th>
                             <th>Age</th>
                             <th>Gender</th>
+                            <th>Email</th> 
                             <th>Contact</th>
-                            <th>Email</th>
                             <th>Case Status</th>
                             <th>Date Added</th>
                         </tr>
@@ -228,51 +234,70 @@
 
             <div class="request-wrapper">
 
-                <h1>Client Request</h1>
+                <h1>Waiting List</h1>
             
                 <input id="search_request" type="text" class="form-control" placeholder="Search Client's Request" aria-label="request search" aria-describedby="basic-addon2"> 
                 <div class="mt-4">
                     <table class="table table-bordered table-striped table-hover">
                         <thead class="table-primary">
                             <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Request Type</th>
+                                <th>Client's Name</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Email</th>
+                                <th>Contact</th>
                                 <th>Date Added</th>
-                                <th>Attachment</th>
-                                <th>Case Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="show-waitinglist">
                             
                         </tbody>
                     </table>
                 </div>
             </div>
 
+            <!--Modal-->
+            <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="viewModalLabel"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="viewModalContent">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        
+                    </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="assigning-wrapper">
-                <h1>Assigning Lists</h1>
+                <h1>Assigned Cases</h1>
             
                 <input id="search_assigned" type="text" class="form-control" placeholder="Search Client's Assigned" aria-label="request search" aria-describedby="basic-addon2"> 
                 <div class="mt-4">
                     <table class="table table-bordered table-striped table-hover">
                         <thead class="table-primary">
                             <tr>
-                                <th>Client's Name</th> 
+                                <th>Case ID </th> 
                                 <th>Assigned Lawyer</th>
-                                <th>Assignment Status</th>
                                 <th>Assigned Date</th>
+                                <th>Assignment Status</th>
+                                <th>Decision Date</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="show-assignedList">
                             
                         </tbody>
                     </table>
                 </div>
-            </div>
-            
 
+            </div>  
         </div><!--Client Request Admin end-->
 
         <div id="team" class="page-section"> <!--TEAM section-->
@@ -288,22 +313,67 @@
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="table-light">
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                            <th>Name</th>
                             <th>Email</th>
                             <th>Contact</th>
                             <th>Date Created</th>
+                            <th>Role</th>
                             <th>Specialization</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="show-teamList">
                         
                     </tbody>
                 </table>
             </div> 
 
         </div><!--TEAM section end-->
+
+        <div id="case_list" class="page-section">
+            <h1>Case Assigned</h1>
+            <input id="search_case" type="text" class="form-control" placeholder="Search Case" aria-label="request search" aria-describedby="basic-addon2"> 
+            <div class="mt-4">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Case ID </th> 
+                            <th>Client's Name</th>
+                            <th>Request Type</th>
+                            <th>Complaint's Description</th>
+                            <th>Propose Date of Appointment</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="show-caseAssigned">
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h1>List of Cases</h1>
+            <input id="search_case" type="text" class="form-control" placeholder="Search Case" aria-label="request search" aria-describedby="basic-addon2"> 
+            <div class="mt-4">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Case ID </th> 
+                            <th>Client's Name</th>
+                            <th>Request Type</th>
+                            <th>Complaint's Description</th>
+                            <th>Appointment</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="show-case">
+                        
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        
 
         <div id="statistics" class="page-section"> <!--Statistics Admin-->
 
@@ -402,6 +472,8 @@
     <script src="scripts/dashboard.js"></script>
     <script src="scripts/clientEntry.js"></script>
     <script src="scripts/getClient.js"></script>
+    <script src="scripts/waitingList.js"></script>
+    <script src="scripts/team.js"></script>
 
 </body>
 </html>

@@ -22,6 +22,37 @@ export const getAllClient = async (limit, offset) => {
   return clientRows;
 };
 
+export const getWaitingList = async() =>{
+
+  const [waitingListRows] = await db.query(` 
+    SELECT
+      c.client_id,
+      c.first_name,
+      c.last_name,
+      c.age,
+      c.gender,
+      c.email_address,
+      c.address,
+      c.contact_number,
+      DATE(c.date_added) AS date_added,
+      cs.case_id,
+      cs.case_status,
+      GROUP_CONCAT(cf.file_path) AS file_path
+    FROM client_tbl c
+    LEFT JOIN case_tbl cs
+      ON c.client_id = cs.client_id
+    LEFT JOIN case_file cf
+      ON cs.case_id = cf.case_id
+    WHERE cs.case_status = "pending"
+    GROUP BY c.client_id
+    ORDER BY c.client_id;
+    `);
+
+  return waitingListRows;
+
+}
+
+
 export const getClientCount = async () => {
   const [clientCountRows] = await db.query("SELECT COUNT(*) AS total FROM client_tbl")
   return clientCountRows[0].total;

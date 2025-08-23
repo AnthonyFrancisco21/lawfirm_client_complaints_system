@@ -18,7 +18,7 @@ db.getConnection((err, connection) => {
     return;
   }
   console.log("✅ Connected successfully!");
-  connection.release(); // release back to the pool
+  connection.release();
 })
 
 export default db; 

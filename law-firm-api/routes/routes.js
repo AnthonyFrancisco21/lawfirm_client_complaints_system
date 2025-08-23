@@ -1,12 +1,20 @@
 import express from "express";
 import multer from "multer";
 
-import { getclient, newClientAndCase } from "../controllers/clientController.js";
+import { getclient, newClientAndCase, waitingList } from "../controllers/clientController.js";
+import {assignment, assigned} from "../controllers/caseController.js";
+import {lawyer} from "../controllers/lawyerController.js"
+import{team} from "../controllers/teamController.js"
 
 const router = express.Router();
 
-// GET
+
 router.get("/getClient", getclient);
+router.get("/waitingList", waitingList)
+router.post("/assignment", assignment)
+router.get("/lawyers", lawyer)
+router.get("/assigned", assigned)
+router.get("/team", team )
 
 // Multer config
 const storage = multer.diskStorage({

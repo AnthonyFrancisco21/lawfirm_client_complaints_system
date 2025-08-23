@@ -1,4 +1,4 @@
-import { getAllClient, getClientCount, newClient, newCase } from "../models/clientModels.js";
+import { getAllClient, getClientCount, newClient, newCase,  getWaitingList } from "../models/clientModels.js";
 import { insertAttachment } from "../models/caseFileModels.js";
 
 
@@ -36,17 +36,11 @@ export const getclient = async (req, res) => {
 };
 
 
-
-
-
-
 export const newClientAndCase = async (req, res) => {
   try {
-    const toNull = (val) => (val === "" || val === undefined ? null : val);
-    
-    
 
-    // Access text fields directly
+    const toNull = (val) => (val === "" || val === undefined ? null : val);
+  
     const clientData = {
       firstname: req.body.first_name,
       lastname: req.body.last_name,
@@ -92,3 +86,27 @@ export const newClientAndCase = async (req, res) => {
     });
   }
 };
+
+
+
+export const waitingList = async(req, res) =>{
+
+  try{
+
+    const dataRes =  await getWaitingList();
+
+    const waitingList = dataRes.map(row => ({
+      ...row,
+      date_added: row.date_added 
+        ? row.date_added.toISOString().split("T")[0]
+        : null
+    }));
+
+    res.json(waitingList)
+
+  }catch(err){
+    console.error(err);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+
+}

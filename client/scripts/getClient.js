@@ -89,7 +89,6 @@ async function getClientFunction(){
                     <td>${client.contact_number}</td>
                     <td>${client.case_status}</td>
                     <td>${client.date_added}</td>
-
                 </tr>`
                     
             });

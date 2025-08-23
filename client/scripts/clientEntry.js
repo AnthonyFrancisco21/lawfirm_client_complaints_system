@@ -57,7 +57,6 @@ function clienEntryFunction() {
             const formData = new FormData(form);
             
             //const adminId = localStorage.getItem("adminId"); // for grabbing a admin id from the jwt
-            //formData.append("admin_id", adminId);
             formData.append("admin_id", 3)
             
             console.log(formData.get('myOption'))

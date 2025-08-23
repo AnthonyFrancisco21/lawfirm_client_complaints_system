@@ -8,3 +8,5 @@ export const insertAttachment = async (caseId, filePath, adminId) => {
   return result.insertId;
 };
 
+
+
