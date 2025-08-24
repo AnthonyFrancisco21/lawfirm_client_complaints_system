@@ -1,9 +1,8 @@
-// config/database.js
-import dotenv from 'dotenv';
-dotenv.config()
-import mysql from 'mysql2/promise';
+import dotenv from "dotenv";
+dotenv.config();
+import mysql from "mysql2/promise";
 
-
+// Promise-based pool for your queries
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -12,14 +11,13 @@ const db = mysql.createPool({
   port: process.env.DB_PORT,
 });
 
-db.getConnection((err, connection) => {
-  if (err) {
-    console.error("❌ Database connection failed:", err);
-    return;
-  }
-  console.log("✅ Connected successfully!");
-  connection.release();
-})
+db.getConnection()
+  .then(conn => {
+    console.log("✅ Connected to DB (promise pool)!");
+    conn.release();
+  })
+  .catch(err => {
+    console.error("❌ DB connection failed:", err);
+  });
 
-export default db; 
- 
+export default db;

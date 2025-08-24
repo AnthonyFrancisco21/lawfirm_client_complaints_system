@@ -14,11 +14,14 @@ function teamFunction() {
 
         try{
 
-            const res = fetch("http://localhost:3000/api/team")
+            const res = await fetch("http://localhost:3000/api/team", {
+                method: "GET",
+                credentials: "include"
+            })
 
-            const result = (await res).json();
+            const result = await res.json()
 
-            return result;
+            return result
 
         }catch(err){
 
@@ -45,7 +48,7 @@ function teamFunction() {
         else{
             data.forEach((admin) => {
 
-                let sp = admin.specialization;
+                 sp = admin.specialization;
                 
                 if(sp === null){
                     sp = "---"

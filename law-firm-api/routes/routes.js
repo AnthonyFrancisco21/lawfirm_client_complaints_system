@@ -5,16 +5,17 @@ import { getclient, newClientAndCase, waitingList } from "../controllers/clientC
 import {assignment, assigned} from "../controllers/caseController.js";
 import {lawyer} from "../controllers/lawyerController.js"
 import{team} from "../controllers/teamController.js"
+import {reqAuth, reqRole} from "../middleware/auth.js"
 
 const router = express.Router();
 
 
-router.get("/getClient", getclient);
-router.get("/waitingList", waitingList)
-router.post("/assignment", assignment)
-router.get("/lawyers", lawyer)
-router.get("/assigned", assigned)
-router.get("/team", team )
+router.get("/getClient", reqAuth, reqRole("super_admin", "lawyer", "staff"), getclient);
+router.get("/waitingList", reqAuth, reqRole("super_admin"), waitingList)
+router.post("/assignment", reqAuth, reqRole("super_admin", "lawyer"), assignment)
+router.get("/lawyers", reqAuth, reqRole("super_admin", "lawyer", "staff"), lawyer)
+router.get("/assigned", reqAuth, reqRole("super_admin", "lawyer"), assigned)
+router.get("/team", reqAuth, reqRole("super_admin"), team )
 
 // Multer config
 const storage = multer.diskStorage({
@@ -26,5 +27,6 @@ const upload = multer({ storage });
 
 // POST client + case + file all in one go
 router.post("/newClientandCase", upload.single("attachment"), newClientAndCase);
+
 
 export default router;
