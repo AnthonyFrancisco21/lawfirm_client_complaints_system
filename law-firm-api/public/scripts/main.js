@@ -1,104 +1,51 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function (){
 
-  loginScripts();
+  loadData()
 
 })
 
-function loginScripts(){ 
+async function loadData(){
 
-  const loginForm = document.querySelector('.login-form');
-  
-  const inputs = loginForm.querySelectorAll('input, select, textarea'); 
+  const userDetails = await user()
+  console.log(userDetails)
 
-  let username = ''
-  let password = ''
-
-  document.getElementById('loginBtn').addEventListener('click', function() {
-
-    inputs.forEach((element) => {
-      
-      if(element.name === 'username'){ username = element.value}
-      if(element.name === 'password'){ password = element.value}
-
-    });
-    loginFunction(username, password)
-  })
-
+  roleTabIdentifier(userDetails)
 }
 
-async function loginFunction(email, password){
 
-  console.log(`Email ${email} password ${password}`)
+async function user(){
 
+  try{
 
-  Swal.fire({
-    title: "Logging you in…",
-    text: "Please wait",
-    allowOutsideClick: false,
-    didOpen: () => {
-        Swal.showLoading();
-    }
-});
-
-
-try{
-
-    const res = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({email, password})
-    });
-
+    const res = await fetch('http://localhost:3000/auth/me')
     const result = await res.json();
+    return result;
 
-    if(result.success){
-        setTimeout(() => {
 
-            Swal.close(); 
-            Swal.fire({
-                icon: 'success',
-                title: `Success!`,
-                text: result.message
-            });
-            
-            console.log(result.user.email)
-            console.log(result.user.role)
-            console.log(result.user.admin_id)
-            /* console.log( req.session.user) */
-
-            return;
-
-        }, 2000)
-        
-    }else{
-        Swal.close();
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: result.message,
-            showConfirmButton: false,
-            timer: 5000
-        });
-    }
-
-  }catch(err){
-      Swal.close();
-      Swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'Error occurred, please try again or refresh the page.', err,
-          showConfirmButton: false,
-          timer: 5000
-      });
-      
+  }
+  catch(err){
+    console.log(err)
   }
 
 }
 
+function roleTabIdentifier(userDetails){
 
+  const role = userDetails.role;
 
+  const caseList = document.getElementById('case_list')
+  const navLink = document.querySelectorAll('.nav-link')
+
+  navLink.forEach((item) => {
+    console.log("link ",item.dataset.page)
+  })
+  
+
+  console.log(`User role: ${role}`)
+
+  
+
+}
 
 
 // Function to show a page and update active nav link
@@ -173,7 +120,7 @@ if (scheduleBtn) {
 
 
 
-//Statistics scripts
+/* //Statistics scripts
 const ctx = document.getElementById('pie-chart').getContext('2d');
     new Chart(ctx, {
       type: 'pie',   // 🔑 set type to "pie" (or "doughnut")
@@ -263,4 +210,4 @@ const clientGrowth = document.getElementById('clientGrowthChart').getContext('2d
         }
       }
     }
-  });
+  }); */

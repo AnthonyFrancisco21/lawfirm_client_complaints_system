@@ -15,17 +15,3 @@ export const AdminController = {
     }
   }
 };
-
-/* 
-export const staffController = async (req , res)=> {
-
-    try{
-        const 
-
-
-    }catch(err){
-        console.log(err)
-    }
-
-}
- */

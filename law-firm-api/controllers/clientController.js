@@ -49,7 +49,7 @@ export const newClientAndCase = async (req, res) => {
       email_address: req.body.email_address,
       address: req.body.address,
       contact_number: req.body.contact_number,
-      adminId: req.body.admin_id
+      adminId: req.session.user.admin_id //HERE
     };
 
     const caseData = {

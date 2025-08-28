@@ -131,7 +131,7 @@ function waitingListFunction(){
                     return; 
                 }
 
-                const filePath = `/law-firm-api${path}`;
+                const filePath = `${path}`;
                 const modalBody = document.getElementById('viewModalContent');
                 const modalLabel = document.getElementById('viewModalLabel');
                 modalLabel.textContent = 'Atttachments';

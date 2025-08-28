@@ -1,6 +1,7 @@
 clienEntryFunction();
 
 function clienEntryFunction() {
+
     newClient();
 
     function newClient() {
@@ -56,10 +57,11 @@ function clienEntryFunction() {
 
             const formData = new FormData(form);
             
-            //const adminId = localStorage.getItem("adminId"); // for grabbing a admin id from the jwt
-            formData.append("admin_id", 3)
+            
+            /* formData.append("admin_id", 3) */
             
             console.log(formData.get('myOption'))
+
             processClientData(formData)
 
         });
@@ -82,7 +84,8 @@ function clienEntryFunction() {
 
             const res = await fetch("http://localhost:3000/api/newClientandCase", {
             method: "POST",
-            body: formData
+            body: formData,
+            credentials: 'include'
             });
 
             const result = await res.json();
