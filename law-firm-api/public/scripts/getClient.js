@@ -1,13 +1,14 @@
 
-
-getClientFunction()
-
 async function getClientFunction(){
 
     
     let currentPage = 1;
-    let pageSize = 10;
-    getClient(1)//For first page
+    let pageSize = 15;
+    let searchValue = '';
+    getClient(1, '')//For first page
+    const input = document.getElementById("search_client").value ='';
+
+
     document.querySelector("a[data-page='prev']").parentElement.classList.toggle("disabled");
 
     document.getElementById("client-page").addEventListener("click", async (e) => {
@@ -24,13 +25,11 @@ async function getClientFunction(){
         currentPage++;
         }
 
-        const response = await getClient(currentPage);
+        const response = await getClient(currentPage, searchValue);
 
         if (response) {
-            const dataLength = response.data.length;
+            
             const totalPages = response.totalPages;
-
-            console.log(`Current Page: ${currentPage}, Data length: ${dataLength}`);
 
             // disable buttons
             document.querySelector("a[data-page='prev']").parentElement.classList.toggle("disabled", currentPage === 1);
@@ -41,11 +40,39 @@ async function getClientFunction(){
 
     });
 
+    search();
+    function search() {
+        const input = document.getElementById("search_client");
 
-    async function getClient(page){
+        input.addEventListener("input", function () {
+            
+            table();
+
+            clearTimeout(input.delayTimer); 
+            input.delayTimer = setTimeout(async () => {
+                searchValue = this.value;
+                currentPage = 1; 
+                console.log("Searching:", searchValue);
+
+                const response = await getClient(currentPage, searchValue);
+                console.log(response)
+
+                if (response) {
+                    const totalPages = response.totalPages;
+                    // update pagination buttons
+                    document.querySelector("a[data-page='prev']").parentElement.classList.toggle("disabled", currentPage === 1);
+                    document.querySelector("a[data-page='next']").parentElement.classList.toggle("disabled", currentPage >= totalPages);
+                }
+            }, 1500);
+        });
+    }
+    
+
+
+    async function getClient(page, searchValue){
         
         try{
-            const res = await fetch(`http://localhost:3000/api/getClient?page=${page}&pageSize=${pageSize}`)
+            const res = await fetch(`http://localhost:3000/api/getClient?page=${page}&pageSize=${pageSize}&name=${searchValue}`)
             
             const dataResponse = await res.json()
             
@@ -53,15 +80,12 @@ async function getClientFunction(){
                 throw(`Error fetching data:`, res.message)
             }
 
-            
             table(dataResponse.data)
             return dataResponse;
 
 
         }catch(err){
             console.log(err)
-
-
         }
 
     }

@@ -70,7 +70,7 @@ try{
             console.log(result.user.role)
             console.log(result.user.admin_id)
             /* console.log( req.session.user) */
-
+            window.location.href = "dashboard.html"
             return;
 
         }, 2000)
@@ -91,7 +91,7 @@ try{
       Swal.fire({
           icon: 'error',
           title: 'Error!',
-          text: 'Error occurred, please try again or refresh the page.', err,
+          text: 'Error occurred, please try again or refresh the page.',
           showConfirmButton: false,
           timer: 5000
       });

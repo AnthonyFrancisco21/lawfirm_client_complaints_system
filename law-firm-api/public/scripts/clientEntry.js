@@ -1,10 +1,35 @@
-clienEntryFunction();
-
 function clienEntryFunction() {
 
-    newClient();
+    loadSript();
 
-    function newClient() {
+    async function loadSript(){
+        const lawyers = await getLawyers();
+        newClient(lawyers);
+
+    }
+
+
+    function newClient(lawyers) {
+
+        const selectLawyer = document.getElementById('preferred_lawyer');
+
+        let selectFormRenderer = null;
+
+        if(!lawyers){
+            selectLawyer.innerHTML = `<option value=''>-- Failed to render lawyer's details, please restart the page.</option>`;
+        }
+        if(lawyers === 0){
+            selectLawyer.innerHTML = `<option value=''>-- No lawyers from the database.</option>`
+        }else{
+            lawyers.forEach((lawyer) => {
+                selectFormRenderer+= `
+                <option value='${lawyer.admin_id}'>Atty. ${lawyer.first_name} ${lawyer.last_name}</option>
+                `
+            })
+        }
+
+        selectLawyer.innerHTML += selectFormRenderer;
+
         const form = document.getElementById("clientForm");
         const steps = document.querySelectorAll(".form-step");
         const nextBtn = document.getElementById("nextBtn");
@@ -35,11 +60,13 @@ function clienEntryFunction() {
             steps[currentStep].classList.add("step-active");
         });
 
-        prevBtn.addEventListener("click", () => {
+        function goPrevStep() {
             steps[currentStep].classList.remove("step-active");
             currentStep--;
             steps[currentStep].classList.add("step-active");
-        });
+        }
+
+        prevBtn.addEventListener("click", goPrevStep);
 
         saveBtn.addEventListener("click", (e) => {
             
@@ -57,11 +84,6 @@ function clienEntryFunction() {
 
             const formData = new FormData(form);
             
-            
-            /* formData.append("admin_id", 3) */
-            
-            console.log(formData.get('myOption'))
-
             processClientData(formData)
 
         });
@@ -92,16 +114,19 @@ function clienEntryFunction() {
 
             if(result.success){
                 setTimeout(() => {
-
                     Swal.close(); 
                     Swal.fire({
                         icon: 'success',
                         title: `Success!`,
                         text: result.message
                     });
-                    
-                    return;
+                    const form = document.getElementById("clientForm");
+                    form.reset();
 
+                    const prevBtn = document.getElementById("prevBtn");
+                    prevBtn.click();
+
+                    return;
                 }, 2000)
                 
             }else{
@@ -128,9 +153,17 @@ function clienEntryFunction() {
         }    
     }
 
+    async function getLawyers(){
 
+        try{                
+            const res = await fetch('http://localhost:3000/api/lawyers');
+            const result = await res.json();     
+            return result
 
+        }catch(err){
+            console.log(err)
+        }
 
-
+    }
 
 }

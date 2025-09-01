@@ -7,9 +7,13 @@ document.addEventListener('DOMContentLoaded', function (){
 async function loadData(){
 
   const userDetails = await user()
-  console.log(userDetails)
+  if (!userDetails || !userDetails.role) {
+    window.location.href = "login.html";
+    return;
+  }
 
   roleTabIdentifier(userDetails)
+  handleHashChange(userDetails)
 }
 
 
@@ -32,18 +36,104 @@ async function user(){
 function roleTabIdentifier(userDetails){
 
   const role = userDetails.role;
-
-  const caseList = document.getElementById('case_list')
   const navLink = document.querySelectorAll('.nav-link')
 
-  navLink.forEach((item) => {
-    console.log("link ",item.dataset.page)
-  })
-  
+  if(role === 'super_admin'){
+    console.log(`Should be superadmin: ${role}`)
 
-  console.log(`User role: ${role}`)
+    navLink.forEach((item) => {
+      let nav = item.dataset.page
+      if(nav !== 'case_list'){
+        item.style.display = 'block'
+      }
+      
+    })
+    document.getElementById('case_list').style.display = 'none';
 
-  
+    clienEntryFunction();
+    //scheduleFunction();
+    getClientFunction();
+    waitingListFunction();
+    teamFunction();
+    //statFunction();
+
+  }
+  else if (role === 'lawyer') {
+    console.log(`Should be lawyer ${role}`);
+
+    const restricted = [
+      'new-client',
+      'schedule',
+      'client-requestAndAssigning',
+      'team',
+      'statistics'
+    ];
+
+    navLink.forEach((item) => {
+      let nav = item.dataset.page;
+      
+      // hide nav button if restricted
+      if (!restricted.includes(nav)) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+
+      // also hide/show the corresponding page section
+      const section = document.getElementById(nav);
+      if (section) {
+        if (restricted.includes(nav)) {
+          section.style.display = 'none';
+        }
+      }
+    });
+
+    getClientFunction();
+    //caselistFunction();
+    //lawyerScheduleFunction;
+
+  }
+
+  else if(role === 'staff'){
+    console.log(`Should be staff ${role}`)
+    const restricted = [
+      'client-requestAndAssigning',
+      'team',
+      'case_list',
+      'statistics'
+    ];
+
+    navLink.forEach((item) => {
+      let nav = item.dataset.page;
+      
+      // hide nav button if restricted
+      if (!restricted.includes(nav)) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+
+      // also hide/show the corresponding page section
+      const section = document.getElementById(nav);
+      if (section) {
+        if (restricted.includes(nav)) {
+          section.style.display = 'none';
+        }
+
+      }
+    });
+
+    clienEntryFunction();
+    //scheduleFunction();
+    getClientFunction();
+
+  }
+  else{
+    window.location.href = "login.html";
+    return;
+  }
+
+
 
 }
 
@@ -68,19 +158,25 @@ function showPage(pageId) {
 }
 
 // Handle hash change
-function handleHashChange() {
+function handleHashChange(userDetails) {
+    const role = userDetails.role;
+    
     const hash = window.location.hash.substring(1);
     if(hash) {
         showPage(hash);
     } else {
-        showPage('home'); // default page
+
+        if(role === 'super_admin'){showPage('new-client');}
+        else if(role === 'lawyer'){showPage('client-status')}
+        else if(role === 'staff'){showPage('new-client')}
+
     }
 }
 
-// Run on page load
+
 window.addEventListener('load', handleHashChange);
 
-// Run when hash changes
+
 window.addEventListener('hashchange', handleHashChange);
 
 

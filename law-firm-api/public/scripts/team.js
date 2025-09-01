@@ -1,4 +1,3 @@
-teamFunction()
 
 function teamFunction() {
 

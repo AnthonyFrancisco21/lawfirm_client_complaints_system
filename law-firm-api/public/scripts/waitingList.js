@@ -1,4 +1,3 @@
-waitingListFunction();
 
 function waitingListFunction(){
     loadData();
@@ -55,6 +54,8 @@ function waitingListFunction(){
                     <td>${client.gender}</td>
                     <td>${client.email_address}</td>
                     <td>${client.contact_number}</td>
+                    <td>${client.preferred_date}</td>
+                    <td>${client.preferred_lawyer}</td>
                     <td>${client.date_added}</td>
                     <td>
                         <button class="view-files" data-path="${client.file_path}">
@@ -189,7 +190,6 @@ function waitingListFunction(){
                 modal.show();
 
                 const lawyersData = await lawyerFunction()
-                console.log(lawyersData)
 
                 const label = document.createElement('label');
                 label.textContent = "Choose a lawyer:";
@@ -214,7 +214,7 @@ function waitingListFunction(){
                 lawyersData.forEach(lawyer => {
                     const option = document.createElement('option');
                     option.value = lawyer.admin_id;          // lawyer id
-                    option.textContent = `Atty. ${lawyer.first_name} ${lawyer.last_name}`; // lawyer name
+                    option.textContent = `Atty. ${lawyer.first_name} ${lawyer.last_name}`; // lawyers name
                     select.appendChild(option);
                 });
 

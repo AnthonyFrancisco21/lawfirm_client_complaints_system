@@ -64,6 +64,7 @@ app.use(session({
 
 // Auth and API routes
 //http://localhost:3000/auth/me
+//http://localhost:3000/api//lawyers
 app.use('/auth', authRouter);
 app.use("/api", routes);
 app.use("/uploads", express.static("uploads"));

@@ -39,8 +39,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#client-requestAndAssigning" data-page="client-requestAndAssigning">
-                            <i class="bi bi-card-checklist"></i> Waiting & Assigned List
+                        <a class="nav-link" href="#reqAndAssign" data-page="reqAndAssign">
+                            <i class="bi bi-card-checklist"></i> Requests & Assignments
                         </a>
                     </li>
                     <li class="nav-item">
@@ -84,6 +84,7 @@
 
     <!-- Main Content -->
     <div class="main-content container">
+
         <div id="new-client" class="page-section active">
             <h1>New Client</h1>
             <p>Enter new client information here.</p>
@@ -174,7 +175,7 @@
                     <div class="mb-3">
                         <label for="preferred_lawyer" class="form-label">Preferred Lawyer</label>
                         <select class="form-select" id="preferred_lawyer" name="preferred_lawyer">
-                            <option value="2">Atty. Dela Cruz</option>
+                            <option value="">----Leave if none----</option>
                         </select>
                     </div>
 
@@ -197,8 +198,8 @@
             <h1>Client Status</h1>
             <p>Check the status of existing clients here.</p>
             <input id="search_client" type="text" class="form-control" placeholder="Search Client" aria-label="client search" aria-describedby="basic-addon2">
-            <div class="mt-4">
-                <table class="table table-bordered table-striped table-hover">
+            <div class="table-wrap">
+                <table class="table table-responsive table-bordered table-striped table-hover">
                     <thead class="table-primary">
                         <tr>
                             <th>Client's Name</th>
@@ -230,14 +231,14 @@
 
         </div><!-- Client status for staff end-->
 
-        <div id="client-requestAndAssigning" class="page-section"> <!--Client Request Admin-->
+        <div id="reqAndAssign" class="page-section"> <!--Client Request Admin-->
 
             <div class="request-wrapper">
 
-                <h1>Waiting List</h1>
+                <h1>Pending Requests</h1>
             
                 <input id="search_request" type="text" class="form-control" placeholder="Search Client's Request" aria-label="request search" aria-describedby="basic-addon2"> 
-                <div class="mt-4">
+                <div class="table-wrap waitingList-table">
                     <table class="table table-bordered table-striped table-hover">
                         <thead class="table-primary">
                             <tr>
@@ -257,30 +258,11 @@
                 </div>
             </div>
 
-            <!--Modal-->
-            <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="viewModalLabel"></h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="viewModalContent">
-                        
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        
-                    </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="assigning-wrapper">
-                <h1>Assigned Cases</h1>
+                <h1>Awaiting Lawyer Action</h1>
             
                 <input id="search_assigned" type="text" class="form-control" placeholder="Search Client's Assigned" aria-label="request search" aria-describedby="basic-addon2"> 
-                <div class="mt-4">
+                <div class="table-wrap">
                     <table class="table table-bordered table-striped table-hover">
                         <thead class="table-primary">
                             <tr>
@@ -309,7 +291,7 @@
                 </div>
                 <button id="add_team" type="button" class="btn btn-primary add-team-btn">Add Team</button>
             </div>
-            <div class="mt-4">
+            <div class="table-wrap">
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="table-light">
                         <tr>
@@ -333,7 +315,7 @@
         <div id="case_list" class="page-section"> <!--LAWYER TAB-->
             <h1>Case Assigned</h1>
             <input id="search_case" type="text" class="form-control" placeholder="Search Case" aria-label="request search" aria-describedby="basic-addon2"> 
-            <div class="mt-4">
+            <div class="table-wrap">
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="table-primary">
                         <tr>
@@ -353,7 +335,7 @@
 
             <h1>List of Cases</h1>
             <input id="search_case" type="text" class="form-control" placeholder="Search Case" aria-label="request search" aria-describedby="basic-addon2"> 
-            <div class="mt-4">
+            <div class="table-wrap">
                 <table class="table table-bordered table-striped table-hover">
                     <thead class="table-primary">
                         <tr>
@@ -437,7 +419,7 @@
                 <label>Case status</label>
 
                 <input id="search_assign" type="text" class="form-control" placeholder="Search Assign to lawyer" aria-label="request search" aria-describedby="basic-addon2"> 
-                <div class="mt-4">
+                <div class="table-wrap">
                     <table class="table table-bordered table-striped table-hover">
                         <thead class="table-primary">
                             <tr>
@@ -459,8 +441,24 @@
 
         </div><!--Statistics Admin-->
 
-
-
+        <!--Modal-->
+        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="viewModalLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewModalContent">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    
+                </div>
+                </div>
+            </div>
+        </div>
 
 
     </div><!--Main end-->

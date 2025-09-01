@@ -7,10 +7,11 @@ export const getclient = async (req, res) => {
   try {
 
     const page = parseInt(req.query.page) || 1;
-    const pageSize = 10;
+    const pageSize = parseInt(req.query.pageSize);
+    const search = req.query.name
     const offset = (page - 1) * pageSize;
 
-    const dataRes = await getAllClient(pageSize, offset);
+    const dataRes = await getAllClient(pageSize, offset, search);
 
     const data = dataRes.map(row => ({
       ...row,
@@ -19,7 +20,7 @@ export const getclient = async (req, res) => {
         : null
     }));
 
-    const total = await getClientCount();
+    const total = await getClientCount(search);
     const totalPages = Math.ceil(total / pageSize)
 
     res.json({
@@ -49,7 +50,7 @@ export const newClientAndCase = async (req, res) => {
       email_address: req.body.email_address,
       address: req.body.address,
       contact_number: req.body.contact_number,
-      adminId: req.session.user.admin_id //HERE
+      adminId: req.session.user.admin_id
     };
 
     const caseData = {

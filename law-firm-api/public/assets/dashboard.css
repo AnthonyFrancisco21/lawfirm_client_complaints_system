@@ -192,11 +192,41 @@ body {
   display: block;
 }
 
-/*Show client for staff style */
+
+
+
+
+
+
+
 
 .page-item{
     cursor: pointer;
 }
 
 
-/* waiting list style*/
+.table-wrap{
+    margin-top: 1em;
+    white-space: nowrap;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.waitingList-table{
+    max-height: 300px !important;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+
+/*-------NAVLINK SETTINGS----------*/
+
+.nav-link{
+    display: none;
+}
+
+

@@ -1,7 +1,9 @@
 import db from "../config/database.js";
 
-export const getAllClient = async (limit, offset) => {
-  const [clientRows] = await db.query(`
+export const getAllClient = async (limit, offset, search) => {
+
+
+  let query = `
     SELECT 
       c.first_name, 
       c.last_name, 
@@ -15,9 +17,26 @@ export const getAllClient = async (limit, offset) => {
     FROM client_tbl c
     LEFT JOIN case_tbl cs
       ON c.client_id = cs.client_id
+  `;
+
+  if (search) {
+    query += `
+      WHERE 
+        c.first_name LIKE ? 
+        OR c.last_name LIKE ? 
+    `;
+  }
+
+  query+= `
     ORDER BY c.client_id
     LIMIT ? OFFSET ?
-  `, [limit, offset]);
+  `
+
+  const params = search 
+  ? [`%${search}%`, `%${search}%`, limit, offset]
+  : [limit, offset];
+
+  const [clientRows] = await db.query(query, params);
 
   return clientRows;
 };
@@ -37,6 +56,8 @@ export const getWaitingList = async() =>{
       DATE(c.date_added) AS date_added,
       cs.case_id,
       cs.case_status,
+      cs.preferred_date,
+      cs.preferred_lawyer,
       GROUP_CONCAT(cf.file_path) AS file_path
     FROM client_tbl c
     LEFT JOIN case_tbl cs
@@ -53,10 +74,25 @@ export const getWaitingList = async() =>{
 }
 
 
-export const getClientCount = async () => {
-  const [clientCountRows] = await db.query("SELECT COUNT(*) AS total FROM client_tbl")
+export const getClientCount = async (search) => {
+  let query = `
+    SELECT COUNT(*) AS total 
+    FROM client_tbl
+  `;
+
+  let params = [];
+
+  if (search) {
+    query += `
+      WHERE first_name LIKE ? 
+      OR last_name LIKE ?
+    `;
+    params = [`%${search}%`, `%${search}%`];
+  }
+
+  const [clientCountRows] = await db.query(query, params);
   return clientCountRows[0].total;
-}
+};
 
 
 export const newClient = async (clientData) => {
