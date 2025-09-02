@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lawfirm CCMS</title>
+    <title>LCMS Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
-    
+    <link rel="icon" type="image/x-icon" href="assets/legal.png">
     <link rel="stylesheet" href="assets/dashboard.css">
 </head>
 <body>
@@ -231,23 +231,26 @@
 
         </div><!-- Client status for staff end-->
 
-        <div id="reqAndAssign" class="page-section"> <!--Client Request Admin-->
+        <div id="reqAndAssign" class="page-section"> <!--Pending Request End Admin-->
 
             <div class="request-wrapper">
 
                 <h1>Pending Requests</h1>
             
-                <input id="search_request" type="text" class="form-control" placeholder="Search Client's Request" aria-label="request search" aria-describedby="basic-addon2"> 
-                <div class="table-wrap waitingList-table">
+                <input id="search_pending" type="text" class="form-control" placeholder="Search Pending Clients" aria-label="search_pending" aria-describedby="basic-addon2"> 
+                <div class="table-wrap pa-table">
                     <table class="table table-bordered table-striped table-hover">
                         <thead class="table-primary">
                             <tr>
+                                <th>Case ID</th>
                                 <th>Client's Name</th>
                                 <th>Age</th>
                                 <th>Gender</th>
                                 <th>Email</th>
                                 <th>Contact</th>
                                 <th>Date Added</th>
+                                <th>Preferred Lawyer</th>
+                                <th>Appointment</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -258,29 +261,7 @@
                 </div>
             </div>
 
-            <div class="assigning-wrapper">
-                <h1>Awaiting Lawyer Action</h1>
-            
-                <input id="search_assigned" type="text" class="form-control" placeholder="Search Client's Assigned" aria-label="request search" aria-describedby="basic-addon2"> 
-                <div class="table-wrap">
-                    <table class="table table-bordered table-striped table-hover">
-                        <thead class="table-primary">
-                            <tr>
-                                <th>Case ID </th> 
-                                <th>Assigned Lawyer</th>
-                                <th>Assigned Date</th>
-                                <th>Assignment Status</th>
-                                <th>Decision Date</th>
-                            </tr>
-                        </thead>
-                        <tbody class="show-assignedList">
-                            
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>  
-        </div><!--Client Request Admin end-->
+        </div><!--Pending Request End-->
 
         <div id="team" class="page-section"> <!--TEAM section-->
             <h1>Team</h1>

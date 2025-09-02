@@ -7,7 +7,7 @@ async function getClientFunction(){
     let searchValue = '';
     getClient(1, '')//For first page
     const input = document.getElementById("search_client").value ='';
-
+    search();
 
     document.querySelector("a[data-page='prev']").parentElement.classList.toggle("disabled");
 
@@ -40,13 +40,13 @@ async function getClientFunction(){
 
     });
 
-    search();
+    
     function search() {
         const input = document.getElementById("search_client");
 
         input.addEventListener("input", function () {
             
-            table();
+            table(); 
 
             clearTimeout(input.delayTimer); 
             input.delayTimer = setTimeout(async () => {
@@ -94,14 +94,14 @@ async function getClientFunction(){
          const table = document.querySelector('.show-client');
 
         if (!data) {
-            table.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
+            table.innerHTML = `<tr><td colspan="7" class="text-center">Loading...</td></tr>`;
             return;
         }
 
         let tableHTML = "";
 
         if(data.length === 0){
-            table.innerHTML = "<tr><td class='no-data' colspan='6'> No data </td></tr>";
+            table.innerHTML = "<tr><td class='no-data' colspan='7'> No data </td></tr>";
         }
         else{
             data.forEach((client) => {

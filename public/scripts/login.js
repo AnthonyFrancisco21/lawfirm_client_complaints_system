@@ -56,25 +56,11 @@ try{
 
     const result = await res.json();
 
-    if(result.success){
-        setTimeout(() => {
+    if(result.success){      
+      Swal.close(); 
+      window.location.href = "dashboard.html"
+      return;
 
-            Swal.close(); 
-            Swal.fire({
-                icon: 'success',
-                title: `Success!`,
-                text: result.message
-            });
-            
-            console.log(result.user.email)
-            console.log(result.user.role)
-            console.log(result.user.admin_id)
-            /* console.log( req.session.user) */
-            window.location.href = "dashboard.html"
-            return;
-
-        }, 2000)
-        
     }else{
         Swal.close();
         Swal.fire({

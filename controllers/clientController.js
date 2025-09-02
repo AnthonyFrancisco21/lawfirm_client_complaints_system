@@ -94,13 +94,18 @@ export const waitingList = async(req, res) =>{
 
   try{
 
-    const dataRes =  await getWaitingList();
+    const search = req.query.search;
+    const dataRes =  await getWaitingList(search);
 
     const waitingList = dataRes.map(row => ({
       ...row,
       date_added: row.date_added 
         ? row.date_added.toISOString().split("T")[0]
-        : null
+        : null,
+
+        preferred_date: row.preferred_date
+      ? row.preferred_date.toISOString().split("T")[0]
+      : null
     }));
 
     res.json(waitingList)

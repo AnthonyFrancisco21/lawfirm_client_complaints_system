@@ -177,7 +177,10 @@ body {
     border-radius: 10px;
     padding: 1em;
 }
+/*Statistics css end*/
 
+
+/*----------CLient Entry CSS------------*/
 .form-step { display: none; }
 .form-step.step-active { display: block; }
 
@@ -192,35 +195,32 @@ body {
   display: block;
 }
 
-
-
-
-
-
-
-
-
 .page-item{
     cursor: pointer;
 }
 
-
 .table-wrap{
     margin-top: 1em;
     white-space: nowrap;
-    max-height: 600px;
+    max-height: 500px;
     overflow-y: auto;
 }
 
-.waitingList-table{
-    max-height: 300px !important;
-}
 
 .table thead th {
   position: sticky;
   top: 0;
   z-index: 1;
 }
+
+/*----------CLient Entry CSS------------*/
+
+/*--------- Pending and Assignment css----------*/
+
+
+
+
+/*--------- Pending and Assignment css end----------*/
 
 
 /*-------NAVLINK SETTINGS----------*/

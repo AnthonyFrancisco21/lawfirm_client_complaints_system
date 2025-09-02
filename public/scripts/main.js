@@ -173,13 +173,8 @@ function handleHashChange(userDetails) {
     }
 }
 
-
 window.addEventListener('load', handleHashChange);
-
-
 window.addEventListener('hashchange', handleHashChange);
-
-
 
 
 let calendar; // declare globally

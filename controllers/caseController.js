@@ -1,10 +1,18 @@
-import { updateStatus, assignLawyer, assignedLawyer  } from "../models/caseModels.js";
+import { updateStatus, assignLawyer /* , assignedLawyer */  } from "../models/caseModels.js";
 
 export const assignment = async (req, res) => {
 
     try{
 
-        const { case_status,case_id, lawyer_id , admin_id } = req.body;
+        const { case_id, lawyer_id } = req.body;
+        const case_status = 'assigning';
+        const admin_id = req.session.user.admin_id;
+        const admin_role = req.session.user.role;
+
+        if(!admin_id || admin_role !== "super_admin"){
+            return res.status(401).json({success: false , message: 'Not authenticated'})
+        }
+
         const result = await updateStatus(case_status, case_id);
         const assigned = await  assignLawyer (case_id, lawyer_id, admin_id)
 
@@ -26,7 +34,7 @@ export const assignment = async (req, res) => {
 
 }
 
-export const assigned = async (req, res) => {
+/* export const assigned = async (req, res) => {
 
     try{
         const result = await assignedLawyer();
@@ -37,3 +45,4 @@ export const assigned = async (req, res) => {
     }
 
 }
+ */

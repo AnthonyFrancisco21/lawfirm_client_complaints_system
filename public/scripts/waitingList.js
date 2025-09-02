@@ -2,61 +2,63 @@
 function waitingListFunction(){
     loadData();
 
-    //const adminId = localStorage.getItem("adminId"); // for grabbing a admin id from the jwt
-    const adminId = 1;
-
     async function loadData(){
         const waitingList = await getWaitingList();
-        const assignedList = await getAssigned();
+        tableList(waitingList); 
+        searchPending();
 
-        tableList(waitingList);
-        asignedTable(assignedList);
-        
+    }
 
+    function searchPending(){
+        const input = document.getElementById("search_pending");
+
+        input.addEventListener("input", function () {
+            
+            tableList(); //For loading
+
+            clearTimeout(input.delayTimer); 
+            input.delayTimer = setTimeout(async () => {
+                let searchValue = this.value;
+
+                getWaitingList(searchValue);
+                
+            }, 1500);
+        });
     }
     
-    async function getWaitingList(){
-
-        try{
-
-            const res = await fetch("http://localhost:3000/api/waitingList")
-
-            const waitingList = await res.json();
-
-            return waitingList;
-
-        }catch(err){
-            console.log(err)
-        }
-
-    }
-
-
 
     function tableList(data) {
-         const tableList = document.querySelector('.show-waitinglist');
+        const tableList = document.querySelector('.show-waitinglist');
     
         if (!data) {
-            tableList.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
+            tableList.innerHTML = `<tr><td colspan="10" class="text-center">Loading...</td></tr>`;
             return;
         }
 
         let tableHTML = "";
 
         if(data.length === 0){
-            tableList.innerHTML = "<tr><td class='no-data' colspan='6'> No data </td></tr>";
+            tableList.innerHTML = "<tr><td class='no-data' colspan='10'> No data </td></tr>";
         }
         else{
             data.forEach((client) => {
+
+                let lawyer = client.preferred_lawyer;
+
+                if(lawyer === null){
+                    lawyer = '---';
+                }
+
                 tableHTML += `<tr>
+                    <td>${client.case_id}</td>
                     <td>${client.first_name} ${client.last_name}</td>
                     <td>${client.age}</td>
                     <td>${client.gender}</td>
                     <td>${client.email_address}</td>
                     <td>${client.contact_number}</td>
-                    <td>${client.preferred_date}</td>
-                    <td>${client.preferred_lawyer}</td>
                     <td>${client.date_added}</td>
+                    <td>${lawyer}</td>
+                    <td>${client.preferred_date}</td>
                     <td>
                         <button class="view-files" data-path="${client.file_path}">
                             Files
@@ -78,47 +80,6 @@ function waitingListFunction(){
             }
     }
 
-    function asignedTable(data){
-        const assignedTable = document.querySelector('.show-assignedList')
-
-        if (!data) {
-            tableList.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
-            return;
-        }
-
-        let tableHTML = "";
-
-        if(data === 0){
-            tableList.innerHTML = "<tr><td class='no-data' colspan='6'> No data </td></tr>";
-
-        }else{
-            data.forEach((item) => {
-
-                let decision = item.decision_date
-
-                if(item.decision_date === null){
-                    decision = '---'
-                }
-
-                tableHTML+= ` <tr>
-                    <td>${item.case_id}</td>
-                    <td>Atty. ${item.first_name} ${item.last_name}</td>
-                    <td>${item.assigned_date}</td>
-                    <td>${item.assignment_status}</td>
-                    <td>${decision}</td>
-                </tr>
-
-                `
-
-            })
-
-        }
-
-        assignedTable.innerHTML = tableHTML;
-
-    }
-
-
     function viewFiles() {
         const viewBtns = document.querySelectorAll(".view-files");
 
@@ -128,7 +89,12 @@ function waitingListFunction(){
 
                 // Check for null, empty string, or the string "null"
                 if (!path || path === "null") {
-                    alert("No file attached to this case.");
+                    Swal.fire({
+                        icon: 'info',
+                        title: `No attachments`,
+                        text: `No attachments on this client`,
+                        howConfirmButton: false
+                    });
                     return; 
                 }
 
@@ -213,7 +179,7 @@ function waitingListFunction(){
                 
                 lawyersData.forEach(lawyer => {
                     const option = document.createElement('option');
-                    option.value = lawyer.admin_id;          // lawyer id
+                    option.value = lawyer.admin_id; // lawyers id
                     option.textContent = `Atty. ${lawyer.first_name} ${lawyer.last_name}`; // lawyers name
                     select.appendChild(option);
                 });
@@ -231,8 +197,7 @@ function waitingListFunction(){
                 document.getElementById('save_btn_id').addEventListener('click', function () {
 
                     const selectedLawyer = select.value;
-                    const statusSet = "assigning"
-                    console.log(`Lawyer ${selectedLawyer}, case id ${case_id} admin id ${adminId}`)
+                    //const statusSet = "assigning"
 
                     Swal.fire({
                         title: "Are you sure?",
@@ -254,15 +219,12 @@ function waitingListFunction(){
                                 } 
                             }); 
 
-                            assignmentFunction(statusSet, selectedLawyer, case_id, adminId)
+                            assignmentFunction(selectedLawyer, case_id)
                             bootstrapModal.hide();
 
                         } // end of if alertResult.isConfirmed
                     }); // end of then(alertResult)
-                    
-                    
-                   
-                    
+                        
                 });
 
 
@@ -281,11 +243,8 @@ function waitingListFunction(){
         })
     }
 
-
-
-
     
-    async function lawyerFunction(){
+    async function lawyerFunction(){ //Get lawyer for dynamic list for assign modal
 
         try{
             const res = await fetch("http://localhost:3000/api/lawyers")
@@ -298,31 +257,37 @@ function waitingListFunction(){
 
     }
 
-    async function getAssigned(){
+    async function getWaitingList(search){
 
         try{
 
-            const res = await fetch("http://localhost:3000/api/assigned")
-            const result = await res.json();
-            return result;
-            
+            const url = search 
+            ? `http://localhost:3000/api/waitingList?search=${search}` 
+            : `http://localhost:3000/api/waitingList`;
+
+            const res = await fetch(url);
+
+            const waitingList = await res.json();
+            console.log(`This is the waiting list`,waitingList)
+
+            tableList(waitingList);
+
+            return waitingList;
 
         }catch(err){
-           console.log(err); 
+            console.log(err)
         }
 
     }
 
-   async function assignmentFunction(status, lawyerId ,caseId, adminId) {
+   async function assignmentFunction(lawyerId ,caseId) {
         try {
             const res = await fetch("http://localhost:3000/api/assignment", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    case_status: status,
                     case_id: caseId,
-                    lawyer_id: lawyerId,
-                    admin_id: adminId
+                    lawyer_id: lawyerId
                 })
             });
 
@@ -330,19 +295,37 @@ function waitingListFunction(){
 
             if (result.success) {
                 Swal.close();
-                alert(result.message);
+                Swal.fire({
+                    icon: 'success',
+                    title: `Success!`,
+                    text: result.message,
+                    showConfirmButton: false,
+                    timer: 5000 
+                });
+
                 loadData();
             } else {
-                console.log(`Error updating: ${result.message}`);
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: result.message,
+                    showConfirmButton: false,
+                    timer: 5000
+                });
             }
 
 
         } catch (err) {
-            console.error("Fetch error:", err);
+            Swal.close();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: `Something went wrong, Please try again or refresh the page.`,
+                showConfirmButton: false,
+                timer: 5000
+            });
         }
     }
-
-
-
 
 }

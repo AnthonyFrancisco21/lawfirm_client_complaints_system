@@ -15,7 +15,7 @@ export const updateStatus = async (case_status, case_id) => {
 
 }
 
-export const assignedLawyer = async () => {
+/* export const assignedLawyer = async () => {
 
     const [result] = await db.query(`
         SELECT 
@@ -35,3 +35,4 @@ export const assignedLawyer = async () => {
     return result
 
 } 
+ */

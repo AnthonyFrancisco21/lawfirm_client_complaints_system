@@ -2,7 +2,6 @@ import db from "../config/database.js";
 
 export const getAllClient = async (limit, offset, search) => {
 
-
   let query = `
     SELECT 
       c.first_name, 
@@ -30,7 +29,7 @@ export const getAllClient = async (limit, offset, search) => {
   query+= `
     ORDER BY c.client_id
     LIMIT ? OFFSET ?
-  `
+  `;
 
   const params = search 
   ? [`%${search}%`, `%${search}%`, limit, offset]
@@ -41,33 +40,48 @@ export const getAllClient = async (limit, offset, search) => {
   return clientRows;
 };
 
-export const getWaitingList = async() =>{
 
-  const [waitingListRows] = await db.query(` 
+
+export const getWaitingList = async(search) =>{
+
+  let query = `
     SELECT
-      c.client_id,
-      c.first_name,
-      c.last_name,
-      c.age,
-      c.gender,
-      c.email_address,
-      c.address,
-      c.contact_number,
-      DATE(c.date_added) AS date_added,
-      cs.case_id,
-      cs.case_status,
-      cs.preferred_date,
-      cs.preferred_lawyer,
-      GROUP_CONCAT(cf.file_path) AS file_path
-    FROM client_tbl c
-    LEFT JOIN case_tbl cs
-      ON c.client_id = cs.client_id
-    LEFT JOIN case_file cf
-      ON cs.case_id = cf.case_id
-    WHERE cs.case_status = "pending"
+    c.client_id,
+    c.first_name,
+    c.last_name,
+    c.age,
+    c.gender,
+    c.email_address,
+    c.address,
+    c.contact_number,
+    DATE(c.date_added) AS date_added,
+    cs.case_id,
+    cs.case_status,
+    DATE(cs.preferred_date) AS preferred_date,
+    cs.preferred_lawyer,
+    GROUP_CONCAT(cf.file_path) AS file_path
+  FROM client_tbl c
+  LEFT JOIN case_tbl cs
+    ON c.client_id = cs.client_id
+  LEFT JOIN case_file cf
+    ON cs.case_id = cf.case_id
+  WHERE cs.case_status = "pending"
+  `
+
+  if(search){
+    query+= `
+      AND (first_name LIKE ? OR last_name LIKE ?) 
+    `
+  }
+
+  query+=`
     GROUP BY c.client_id
     ORDER BY c.client_id;
-    `);
+  `
+
+  const params = search ? [`%${search}%`, `%${search}%`] : [];
+
+  const [waitingListRows] = await db.query(query, params)
 
   return waitingListRows;
 
