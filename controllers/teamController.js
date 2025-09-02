@@ -4,7 +4,8 @@ export const team = async (req, res) => {
 
     try{
 
-        const result = await getTeam();
+        const search = req.query.search
+        const result = await getTeam(search);
 
         if(result){
             res.status(200).json(result)

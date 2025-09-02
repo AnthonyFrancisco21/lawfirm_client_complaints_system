@@ -1,8 +1,8 @@
 import db from "../config/database.js";
 
-export const getTeam = async () => {
+export const getTeam = async (search) => {
 
-    const [result] = await db.query(` 
+    let query = `
         SELECT 
             first_name,
             last_name,
@@ -11,7 +11,20 @@ export const getTeam = async () => {
             DATE_FORMAT(date_created, '%Y-%m-%d') AS date_created,
             role,
             specialization
-        FROM admin_tbl WHERE role = 'lawyer' || role = 'staff' `)
+        FROM admin_tbl 
+        WHERE (role = 'lawyer' || role = 'staff')
+    `;
+
+    if(search){
+        query+=`
+            AND (first_name LIKE ? OR last_name LIKE ?)
+        `
+    }
+
+    const param = search ? [`%${search}%`, `%${search}%`] : [];
+
+    const [result] = await db.query(query, param)
+
     return result;
 
 } 

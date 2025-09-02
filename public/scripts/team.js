@@ -5,27 +5,43 @@ function teamFunction() {
 
     async function loadData() {
         const result = await getTeam();
-        teamTable(result)
-        console.log(result)
+        searchTeam()
     }
 
-    async function getTeam(){
+
+    function searchTeam(){
+        const input = document.getElementById("search_team");
+
+        input.addEventListener("input", function () {
+            
+            teamTable(); //For loading
+
+            clearTimeout(input.delayTimer); 
+            input.delayTimer = setTimeout(async () => {
+                let searchValue = this.value;
+
+                getTeam(searchValue);
+                
+            }, 1500);
+        });
+    }
+
+    async function getTeam(search){
 
         try{
 
-            const res = await fetch("http://localhost:3000/api/team", {
+            const url = search ? `http://localhost:3000/api/team?search=${search}` : `http://localhost:3000/api/team`;
+
+            const res = await fetch(url, {
                 method: "GET",
                 credentials: "include"
             })
-
             const result = await res.json()
-
+            teamTable(result)
             return result
 
         }catch(err){
-
             console.log(err)
-
         }
 
     }

@@ -266,10 +266,7 @@ function waitingListFunction(){
             : `http://localhost:3000/api/waitingList`;
 
             const res = await fetch(url);
-
             const waitingList = await res.json();
-            console.log(`This is the waiting list`,waitingList)
-
             tableList(waitingList);
 
             return waitingList;
