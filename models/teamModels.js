@@ -4,6 +4,7 @@ export const getTeam = async (search) => {
 
     let query = `
         SELECT 
+            admin_id,
             first_name,
             last_name,
             email_address,

@@ -146,7 +146,6 @@ function waitingListFunction(){
                 const case_id = this.dataset.id;
                 
                 const modalBody = document.getElementById('viewModalContent');
-                const modalFotter = document.getElementById('modal-footer');
                 const modalLabel = document.getElementById('viewModalLabel');
 
                 modalLabel.textContent = 'Assigned Section';
@@ -161,7 +160,7 @@ function waitingListFunction(){
                 label.textContent = "Choose a lawyer:";
                 label.style.marginBottom = "1em";
                 label.setAttribute("for", "lawyerSelect");
-
+ 
                 const saveBtn = document.createElement('button');
                 
                 saveBtn.type = "button";                      
@@ -239,8 +238,8 @@ function waitingListFunction(){
                 
                 });
                 
-            })
-        })
+            })//btn addEventListener End
+        })//assignedBtn foreach
     }
 
     
