@@ -1,4 +1,3 @@
-
 function teamFunction() {
 
     loadData()
@@ -79,7 +78,7 @@ function teamFunction() {
                     <td>${sp}</td>
                     <td>
 
-                        <button class='delete_btn' data-id="${admin.admin_id}">
+                        <button class='btn btn-danger delete_btn' data-id="${admin.admin_id}">
                             Delete
                         </button>
 
@@ -105,8 +104,10 @@ function teamFunction() {
 
             if(target.classList.contains('delete_btn')){
                 const row = target.closest('.delete_btn');
-                const id = row.dataset.id;
-                console.log(`Delete team ${id}`)
+                const admin_id = row.dataset.id;
+                
+                deleteFunction(admin_id);
+
             }
 
 
@@ -140,7 +141,7 @@ function teamFunction() {
             const input1 = document.createElement('input');
             input1.type = "text";
             input1.className = "form-control mb-3";
-            input1.name = "field1";
+            input1.name = "First Name";
             input1.id = "first_name";
 
             // Second input
@@ -152,7 +153,7 @@ function teamFunction() {
             const input2 = document.createElement('input');
             input2.type = "text";
             input2.className = "form-control mb-3";
-            input2.name = "field2";
+            input2.name = "Last Name";
             input2.id = "last_name";
 
             // Third input gmail
@@ -164,8 +165,8 @@ function teamFunction() {
             const input3 = document.createElement('input')
             input3.type = "email";
             input3.className = "form-control mb-3";
-            input3.name = "field3"
-            input3.id = "email_address"
+            input3.name = "Email Address";
+            input3.id = "email_address";
 
 
             // Select element for role
@@ -187,6 +188,7 @@ function teamFunction() {
             });
 
             //Select Specialization if new member role is lawyer
+            const specContainer = document.createElement('div');
             const selectSpecLabel = document.createElement('label')
             selectSpecLabel.textContent = "Lawyer's Specialization";
             selectSpecLabel.className = "form-label mt-2";
@@ -201,12 +203,29 @@ function teamFunction() {
                 'Environmental Law','Immigration Law','Constitutional Law',
                 'Bankruptcy Law'].forEach(opt => {
                 const option = document.createElement('option');
-                option.value = opt.toLowerCase().replace(" ", "_");
+                option.value = opt;
                 option.textContent = opt;
                 selectSpec.appendChild(option);
             });
 
-            // Input password
+            // Contact input
+            const label4 = document.createElement('label')
+            label4.textContent = 'Contact Number';
+            label4.setAttribute('for', 'contact_number')
+            label4.setAttribute('inputmode', 'numeric')
+            label4.className = "form-label mt-2";
+
+            const input4 = document.createElement('input')
+            input4.type = "number";
+            input4.className = "form-control mb-3";
+            input4.name = "Contact Number";
+            input4.id = "contact_number";
+
+            input4.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, "");
+            });
+
+            // Insert password
             const pass1Label = document.createElement('label');
             pass1Label.textContent = 'Enter Password';
             pass1Label.setAttribute('for', 'enter_password');
@@ -250,19 +269,23 @@ function teamFunction() {
             form.appendChild(selectLabel);
             form.appendChild(selectRole);
 
-            form.appendChild(selectSpecLabel);
-            form.appendChild(selectSpec);
+            specContainer.appendChild(selectSpecLabel);
+            specContainer.appendChild(selectSpec);
+            form.appendChild(specContainer)
 
             selectRole.addEventListener('change', function () {
                  if(this.value === "staff"){
-                    if (form.contains(selectSpecLabel)) form.removeChild(selectSpecLabel);
-                    if (form.contains(selectSpec)) form.removeChild(selectSpec);
+                    if (specContainer.contains(selectSpecLabel)) specContainer.removeChild(selectSpecLabel);
+                    if (specContainer.contains(selectSpec)) specContainer.removeChild(selectSpec);
                 }else{
-                    form.appendChild(selectSpecLabel);
-                    form.appendChild(selectSpec);
+                    specContainer.appendChild(selectSpecLabel);
+                    specContainer.appendChild(selectSpec);
                 }
             });
 
+            form.appendChild(label4);
+            form.appendChild(input4);
+            
             form.appendChild(pass1Label);
             form.appendChild(pass1);
 
@@ -275,8 +298,31 @@ function teamFunction() {
             // Show modal with Bootstrap instance
             const modal = new bootstrap.Modal(modalEl);
             modal.show();
+            let formValue = {};
 
-            // Reset when modal is hidden
+            saveBtn.addEventListener('click', function(){
+
+                const allValue = form.querySelectorAll('input, select');
+                
+                const pass1 = form.querySelector("#enter_password").value;
+                const pass2 = form.querySelector("#reEnter_password").value;
+
+                if (pass1 !== pass2) {
+                    alert("Passwords didn't match");
+                    return; 
+                }
+
+                const formValue = {};
+                allValue.forEach(item => {
+                    formValue[item.id] = item.value;
+                });
+
+                addMember(formValue);
+
+                
+            })
+
+            // Reset when modal if hidden
             modalEl.addEventListener("hidden.bs.modal", () => {
                 modalBody.innerHTML = "";   
                 if (saveBtn) saveBtn.remove();
@@ -287,7 +333,158 @@ function teamFunction() {
     }
 
 
-    
+    async function addMember(formValue){
+
+        console.log(JSON.stringify(formValue, null, 2));
+        Swal.fire({
+            title: "Adding...",
+            text: "Please wait",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try{
+            const res = await fetch(`http://localhost:3000/api/newMember`, {
+                method: 'POST',
+                headers: {"content-type" : "application/json" },
+                body: JSON.stringify({
+                    first_name: formValue.first_name,
+                    last_name: formValue.last_name,
+                    email_address: formValue.email_address,
+                    role: formValue.select_role_id,
+                    specialization: formValue.select_spec_id,
+                    contact_number: formValue.contact_number,
+                    enter_password: formValue.enter_password
+                }),
+                credentials: 'include'         
+            })
+
+            const result = await res.json();
+
+            if(result.success){
+
+                const modalEl = document.getElementById('viewModal');
+                const modalBody = document.getElementById('viewModalContent');
+                const saveBtn = document.getElementById("save_btn_id");
+
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+
+                modalEl.addEventListener("hidden.bs.modal", () => {
+                    modalBody.innerHTML = "";   
+                    if (saveBtn) saveBtn.remove();
+                });
+
+                Swal.close(); 
+                Swal.fire({
+                    icon: 'success',
+                    title: `Success!`,
+                    text: result.message
+                });
+                
+                loadData();
+                const addForm = document.getElementById('addForm');
+                addForm.reset();
+
+                return;
+                
+                
+            }else{
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: result.message,
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+
+
+        }catch(err){
+            console.log(err)
+            Swal.close();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Something went wrong, please try again later!',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        } 
+
+    }
+
+
+
+    async function deleteFunction(admin_id){
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this user?",
+            icon: "question",    
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6 ",
+            confirmButtonText: "Yes, Delete it!"
+        }).then(async (alertResult) => {
+            if (alertResult.isConfirmed) {
+                
+                Swal.fire({
+                    title: "Deleting...",
+                    text: "Please wait",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    } 
+                }); 
+
+                try{    
+                    const res = await fetch(`http://localhost:3000/api/deleteMember`, {
+                        method: "POST",
+                        headers: {"content-type" : "application/json"},
+                        body: JSON.stringify({ admin_id }),
+                        credentials: "include"
+                    })
+
+                    const result = await res.json();
+
+                    if(result){
+                        Swal.close(); 
+                        Swal.fire({
+                            icon: 'success',
+                            title: `Success!`,
+                            text: result.message
+                        });
+                        loadData();
+                        return
+                    }else{
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+
+                }catch(err){
+                    console.log(err)
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Something went wrong, please try again later!',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+
+            } // end of if alertResult.isConfirmed
+        });
+    }
 
 
 

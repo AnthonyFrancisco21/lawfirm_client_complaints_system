@@ -30,9 +30,6 @@ function loginScripts(){
 
 async function loginFunction(email, password){
 
-  console.log(`Email ${email} password ${password}`)
-
-
   Swal.fire({
     title: "Logging in…",
     text: "Please wait",
@@ -40,11 +37,10 @@ async function loginFunction(email, password){
     didOpen: () => {
         Swal.showLoading();
     }
-});
+  });
 
 
-try{
-
+  try{
     const res = await fetch("/auth/login", {
       method: "POST",
       headers: {

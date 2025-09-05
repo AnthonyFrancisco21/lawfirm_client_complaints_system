@@ -19,6 +19,8 @@ export const login = async (req,res) =>{
         const success = await bcrypt.compare(password, user.password);
         if (!success) return res.status(401).json({ message: 'Invalid password' });
 
+        //if(user.isDeleted === 1) return res.status(401).json({message: 'This account has been deleted.'})
+
         req.session.user = { admin_id: user.admin_id, email: user.email_address, role: user.role };
         res.json({ success: true, message:'Log in successfully' , user: req.session.user });
 

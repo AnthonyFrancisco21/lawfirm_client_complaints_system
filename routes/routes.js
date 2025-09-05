@@ -2,9 +2,9 @@ import express from "express";
 import multer from "multer";
 
 import { getclient, newClientAndCase, waitingList } from "../controllers/clientController.js";
-import {assignment/*  assigned */} from "../controllers/caseController.js";
+import {assignment} from "../controllers/caseController.js";
 import {lawyer} from "../controllers/lawyerController.js"
-import{team} from "../controllers/teamController.js"
+import{team, addMember, changeDeleteValue} from "../controllers/teamController.js"
 import {reqAuth, reqRole} from "../middleware/auth.js"
 
 const router = express.Router();
@@ -14,8 +14,9 @@ router.get("/getClient", reqAuth, reqRole("super_admin", "lawyer", "staff"), get
 router.get("/waitingList", reqAuth, reqRole("super_admin"), waitingList)
 router.post("/assignment", reqAuth, reqRole("super_admin", "lawyer"), assignment)
 router.get("/lawyers", reqAuth, reqRole("super_admin", "lawyer", "staff"), lawyer)
-/* router.get("/assigned", reqAuth, reqRole("super_admin", "lawyer"), assigned) */
 router.get("/team", reqAuth, reqRole("super_admin"), team )
+router.post("/newMember", reqAuth, reqRole("super_admin"), addMember)
+router.post("/deleteMember", reqAuth, reqRole("super_admin"), changeDeleteValue)
 
 // Multer config
 const storage = multer.diskStorage({

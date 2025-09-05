@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function (){
 async function loadData(){
 
   const userDetails = await user()
-  if (!userDetails || !userDetails.role) {
+  if (!userDetails || !userDetails.role || userDetails.isDeleted === 0) {
     window.location.href = "login.html";
     return;
   }
